@@ -27,5 +27,5 @@ mail_postgres    mail_redis     metadata.db   nextcloud_pgsql
 healthcheck.io to ensure the instance is up:
 ```
 # crontab -l
-0 */3 * * * curl -fsS --retry 3 https://hc-ping.com/cc31ad84-a67b-43a1-8db5-9a9330d33e2d > /dev/null
+33 */3 * * * curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
 ```
