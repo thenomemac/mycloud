@@ -19,7 +19,7 @@ services:
      - POSTGRES_USER=nextcloud
      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   app:
-    image: nextcloud
+    image: nextcloud:apache
     # ports:
     #   - 8080:80
     domainname: cloud.olsonsky.com
