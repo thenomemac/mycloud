@@ -28,4 +28,5 @@ healthcheck.io to ensure the instance is up:
 ```
 # crontab -l
 33 */3 * * * curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
+3 * * * * /opt/mycloud/restic/backup.sh && curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
 ```
