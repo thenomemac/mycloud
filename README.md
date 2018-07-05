@@ -28,7 +28,7 @@ healthcheck.io to ensure the instance is up:
 ```
 # crontab -l
 33 */3 * * * curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
-3 * * * * /opt/mycloud/restic/backup.sh && curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
+3 * * * * bash /opt/mycloud/restic/backup.sh > /var/log/mycloud-backup.log 2>&1 && curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
 8 2 * * * bash /opt/mycloud/mail/update.sh && bash /opt/mycloud/nextcloud/update.sh && curl -fsS --retry 3 <GUID> > /dev/null
 
 ```
