@@ -8,7 +8,7 @@ volumes:
 
 services:
   pgsqldb:
-   image: postgres:10.4-alpine
+   image: postgres:10-alpine
    restart: always
    volumes:
      - pgsql:/var/lib/postgresql/data

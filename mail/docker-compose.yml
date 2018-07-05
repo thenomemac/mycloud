@@ -28,7 +28,7 @@ networks:
 
 services:
   traefik:
-    image: traefik:1.6.3-alpine
+    image: traefik:alpine
     container_name: traefik
     restart: ${RESTART_MODE}
     ports:
@@ -143,7 +143,7 @@ services:
   # https://github.com/docker-library/postgres
   # https://postgresql.org/
   postgres:
-    image: postgres:10.4-alpine
+    image: postgres:10-alpine
     container_name: postgres
     restart: ${RESTART_MODE}
     stop_signal: SIGINT                 # Fast Shutdown mode
@@ -163,7 +163,7 @@ services:
   # https://github.com/docker-library/redis
   # https://redis.io/
   redis:
-    image: redis:4.0-alpine
+    image: redis:4-alpine
     container_name: redis
     restart: ${RESTART_MODE}
     command: redis-server --appendonly yes
