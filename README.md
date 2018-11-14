@@ -32,3 +32,10 @@ healthcheck.io to ensure the instance is up:
 8 2 * * * bash -ex /opt/mycloud/mail/update.sh && bash /opt/mycloud/nextcloud/update.sh && curl -fsS --retry 3 <GUID> > /dev/null
 
 ```
+
+## Maintenance
+Once in a while your disk will get full of image cache files. You'll need to clean these up:
+
+```bash
+docker system prune -a -f
+```
