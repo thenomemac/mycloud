@@ -30,7 +30,7 @@ healthcheck.io to ensure the instance is up:
 33 */3 * * * curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
 3 4 * * * bash -ex /opt/mycloud/restic/backup.sh > /var/log/mycloud-backup.log 2>&1 && curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
 8 2 * * * bash -ex /opt/mycloud/mail/update.sh && bash -ex /opt/mycloud/nextcloud/update.sh && curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
-8 * * * * bash -ex /opt/mycloud/util/diskspace.sh && curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
+8 * * * * bash -ex /opt/mycloud/util/diskspace.sh > /var/log/util-diskspace.log 2>&1 && curl -fsS --retry 3 https://hc-ping.com/<GUID> > /dev/null
 ```
 
 ## Maintenance
