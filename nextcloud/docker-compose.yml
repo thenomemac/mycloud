@@ -8,7 +8,7 @@ volumes:
 
 services:
   pgsqldb:
-   image: postgres:10-alpine
+   image: postgres:11-alpine
    restart: always
    volumes:
      - pgsql:/var/lib/postgresql/data
@@ -19,7 +19,7 @@ services:
      - POSTGRES_USER=nextcloud
      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   app:
-    image: nextcloud:15-apache
+    image: nextcloud:16-apache
     # ports:
     #   - 8080:80
     domainname: cloud.olsonsky.com
