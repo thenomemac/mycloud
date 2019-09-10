@@ -1,0 +1,37 @@
+version: "3"
+
+# local volumes in: /var/lib/docker/volumes
+volumes:
+  traefik:
+    driver: local
+
+# IPv4 only
+# docker network create http_network
+
+# IPv4/IPv6 network
+# docker network create http_network --ipv6 --subnet "fd00:0000:0000:0000::/64"
+# Refer to https://github.com/hardware/mailserver/#ipv6-support for more information.
+
+networks:
+  http_network:
+    external: true
+
+services:
+  traefik:
+    image: traefik:alpine
+    container_name: traefik
+    restart: ${RESTART_MODE}
+    ports:
+      - "80:80"
+      - "443:443"
+    labels:
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:traefik.${MAILSERVER_DOMAIN}
+      - traefik.port=8080
+      - traefik.docker.network=http_network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${VOLUMES_ROOT_PATH}/traefik/traefik.toml:/traefik.toml:ro
+      - traefik:/etc/traefik
+    networks:
+      - http_network
