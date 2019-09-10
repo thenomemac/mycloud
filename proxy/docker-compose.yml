@@ -31,7 +31,7 @@ services:
       - traefik.docker.network=http_network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${VOLUMES_ROOT_PATH}/traefik/traefik.toml:ro
+      - ${VOLUMES_ROOT_PATH}/traefik/traefik.toml:/etc/traefik.toml:ro
       - traefik:/etc/traefik
     networks:
       - http_network
