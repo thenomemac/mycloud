@@ -3,7 +3,7 @@
 ## Setup
 
 ```bash
-apt update && apt upgrade -y && apt install emacs htop tmux
+apt update && apt upgrade -y && apt install emacs htop tmux unattended-upgrades
 ```
 
 ### Storage
@@ -165,6 +165,24 @@ profiles:
   name: macvlanprofile
 ```
 
+Update all images nightly: `/etc/cron.daily/update-lxc-containers`
+```bash
+#!/bin/bash -ex
+function updateall {
+    lxc -c ns --format csv ls | grep RUNNING | cut -f1 -d',' | xargs -I{} bash -exc "echo 'updating-lxc: {}' && lxc exec {} -- apt update && lxc exec {} -- apt -y upgrade && lxc exec {} -- apt -y autoremove && echo 'success-updating-lxc: {}'" && echo "success update-lxc-containers"
+}
+if [ "$1" == "--all" ]; then
+    updateall
+else
+    systemd-cat -t "$0" bash -ex "$0" --all
+    # TODO: add healthcheck and snapshots
+fi
+```
+
+### Disaster recovery
+
+Add cloud backup and snapshot sending.
+
 ### NAS
 
 Nas setup in `/etc/samba/smb.conf`:
@@ -214,7 +232,8 @@ AllowedIPs = 10.0.0.2/32, fd42:42:42::2/128
 
 Run to configure wireguard interface:
 ```bash
-apt install wireguard-tools
+apt update && apt install wireguard
+mkdir -p /etc/wireguard && cd /etc/wireguard && umask 077 && wg genkey | tee privatekey | wg pubkey > publickey
 # wg-quick up wg0
 systemctl start wg-quick@wg0
 ip a
