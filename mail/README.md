@@ -1,0 +1,1 @@
+See restic olsonsky.com bitwarden entry for notes on how to mount the restic snapshots of the mailu config. This was the last working state of the mail server before migrating to proton mail and that config was never commited to git.
