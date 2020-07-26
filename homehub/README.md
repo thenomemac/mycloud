@@ -1,0 +1,1 @@
+The homehub pc is used for calendar via a touch interface in the kitchen. This directory contains various scripts and automation used to run this machine.

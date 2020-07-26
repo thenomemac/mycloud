@@ -1,0 +1,56 @@
+#!/usr/bin/python3
+
+# place file in /etc/cron.hourly/
+import os
+from datetime import datetime
+from os import environ
+from subprocess import check_call
+from sys import argv
+from time import sleep
+
+print(f"Running {argv}")
+
+
+def demote(user_uid, user_gid):
+    def result():
+        report_ids("starting demotion")
+        os.setgid(user_gid)
+        os.setuid(user_uid)
+        report_ids("finished demotion")
+
+    return result
+
+
+def report_ids(msg):
+    print("uid, gid = %d, %d; %s" % (os.getuid(), os.getgid(), msg))
+
+
+DEMOTEFN = demote(1000, 1001)
+
+
+def main():
+    if environ.get("CRON_DEBUG") == "1":
+        print("CRON_DEBUG mode")
+        print("display off")
+        check_call("xset -display :0.0 dpms force off", shell=True, preexec_fn=DEMOTEFN)
+        sleep(5)
+        print("display on")
+        check_call("xset -display :0.0 dpms force on", shell=True, preexec_fn=DEMOTEFN)
+
+    if len(argv) > 1:
+        force = True
+    else:
+        force = False
+
+    hour = datetime.now().hour
+
+    if hour > 20 or hour < 6 or force:
+        print("display off")
+        check_call("xset -display :0.0 dpms force off", shell=True, preexec_fn=DEMOTEFN)
+    else:
+        print("display on")
+        check_call("xset -display :0.0 dpms force on", shell=True, preexec_fn=DEMOTEFN)
+
+
+if __name__ == "__main__":
+    main()
