@@ -1,0 +1,72 @@
+services:
+
+  podlab:
+    image: thenomemac/podlab:latest
+    container_name: podlab
+    restart: always
+    volumes:
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+    environment:
+      - DO_AUTH_TOKEN=${DO_AUTH_TOKEN}
+    network_mode: host
+
+  traefik:
+    image: docker.io/traefik
+    container_name: traefik
+    restart: always
+    # command:
+    #   - "--log.level=INFO"
+    #   - "--api.insecure=true"
+    #   - "--entrypoints.web.address=:80"
+    #   - "--entrypoints.websecure.address=:443"
+    #   - "--providers.docker=true"
+    #   - "--providers.docker.exposedByDefault=false"
+    #   - "--providers.docker.useBindPortIP=false"
+    #   - "--providers.docker.watch=true"
+    ports:
+      - "8000:80"
+      - "8443:443"
+      - "8080:8080"
+    volumes:
+      # - /var/run/docker.sock:/var/run/docker.sock
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ${VOLUME_DIR}/traefik_acme:/etc/traefik/acme
+
+    labels:
+      # TODO: fix on portical re-write
+      # - 'portical.upnp.forward=80:8000'
+      # - 'portical.upnp.forward=443:8443'
+      - 'portical.upnp.forward=443:8443/all|80:8000/all'
+      - 'podlab.dns.update=olsonsky.com a minecraft auto|olsonsky.com a @ auto'
+
+  nginxstatic:
+    image: docker.io/flashspys/nginx-static
+    container_name: nginxstatic
+    restart: always
+    ports:
+      - 8081:80
+    volumes: 
+      - ${VOLUME_DIR}/html:/static:z
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.defaultrouter.rule=Host(`minecraft.olsonsky.com`)"
+
+  jellyfin:
+    image: docker.io/jellyfin/jellyfin
+    container_name: jellyfin
+    # Optional - specify the uid and gid you would like Jellyfin to use instead of root
+    # user: uid:gid
+    ports:
+      - 8096:8096/tcp
+      - 7359:7359/udp
+    volumes:
+      - ${VOLUME_DIR}/jellyfin/config:/config
+      - ${VOLUME_DIR}/jellyfin/cache:/cache
+      - type: bind
+        source: /shared/downloads
+        target: /media
+    restart: 'always'
+    # Optional - alternative address used for autodiscovery
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://192.168.1.107:8096
