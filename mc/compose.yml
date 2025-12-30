@@ -1,0 +1,60 @@
+services:
+  # do not delete data
+  mc3:
+    container_name: mc3
+    image: docker.io/itzg/minecraft-server:latest
+    restart: always
+    tty: true
+    stdin_open: true
+    ports:
+      - "25567:25565"
+    environment:
+      EULA: "TRUE"
+    volumes:
+      - ${VOLUME_DIR}/mc3:/data
+    labels:
+      - 'portical.upnp.forward=25567:25567/tcp'
+      - 'podlab.dns.update=olsonsky.com a mc3 auto|olsonsky.com srv _minecraft._tcp.mc3 mc3 25567'
+
+  mc2:
+    container_name: mc2
+    image: docker.io/itzg/minecraft-server:java21
+    restart: always
+    tty: true
+    stdin_open: true
+    ports:
+      - "25566:25565"
+    environment:
+      EULA: "TRUE"
+      # TYPE: FABRIC
+      # VERSION: 1.21.1
+      CF_API_KEY: ${CF_API_KEY}
+      TYPE: AUTO_CURSEFORGE
+      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/fantasy-minecraft-fabric/files/7269069
+      CF_FORCE_INCLUDE_MODS: |
+        oracle-index
+    volumes:
+      - ${VOLUME_DIR}/mc2:/data
+      - ${VOLUME_DIR}/modscache:/downloads:ro
+    labels:
+      - 'portical.upnp.forward=25566:25566/tcp'
+      - 'podlab.dns.update=olsonsky.com a mc2 auto|olsonsky.com srv _minecraft._tcp.mc2 mc2 25566'
+
+  mc1:
+    container_name: mc1
+    image: docker.io/itzg/minecraft-server:latest
+    restart: always
+    tty: true
+    stdin_open: true
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      CF_API_KEY: ${CF_API_KEY}
+      TYPE: AUTO_CURSEFORGE
+      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/all-in-one-create/files/6251041
+    volumes:
+      - ${VOLUME_DIR}/mc1:/data
+    labels:
+      - 'portical.upnp.forward=25565:25565/tcp'
+      - 'podlab.dns.update=olsonsky.com a mc1 auto|olsonsky.com srv _minecraft._tcp.mc1 mc1 25565'

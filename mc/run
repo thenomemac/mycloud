@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -x
+podman-compose down
+podman-compose up -d
+podman-compose ps
