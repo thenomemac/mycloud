@@ -1,4 +1,4 @@
-# Config for person servers
+# Config for personal servers
 
 ## Description:
 
