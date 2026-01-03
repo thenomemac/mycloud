@@ -1,0 +1,58 @@
+services:
+
+  gluetun:
+    image: docker.io/qmcgaw/gluetun
+    container_name: gluetun
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_TYPE=wireguard
+      # mullvad wiregaurd name: Unique Wombat
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=10.70.44.39/32
+      - SERVER_CITIES=Chicago IL
+    ports:
+      - 9091:9091
+
+  qbt:
+    # # for debugging
+    # #cap_add:
+    #   #- SYS_PTRACE
+    # # additional arguments to `qbittorrent-nox`
+    # #command:
+    #   #- --help
+    container_name: qbt
+    environment:
+      # - PAGID=10000
+      # - PGID=1000
+      # - PUID=1000
+      - QBT_LEGAL_NOTICE=confirm
+      - QBT_VERSION=latest
+      - QBT_TORRENTING_PORT=51413
+      - QBT_WEBUI_PORT=9091
+      # - VOLUME_DIR=/shared/volumes
+      # TZ=UTC
+      - TZ=America/New_York
+      # - UMASK=022
+      - UMASK=000
+    image: docker.io/qbittorrentofficial/qbittorrent-nox:${QBT_VERSION}
+    network_mode: "service:gluetun"
+    # ports:
+    #   # for bittorrent traffic
+    #   - ${QBT_TORRENTING_PORT}:${QBT_TORRENTING_PORT}/tcp
+    #   - ${QBT_TORRENTING_PORT}:${QBT_TORRENTING_PORT}/udp
+    #   # for WebUI
+    #   - ${QBT_WEBUI_PORT}:${QBT_WEBUI_PORT}/tcp
+    read_only: true
+    # stop_grace_period: 30m
+    tmpfs:
+      - /tmp
+    tty: true
+    volumes:
+      - ${VOLUME_DIR}/qbittorent_config:/config
+      - /shared/downloads:/downloads
+    restart: always

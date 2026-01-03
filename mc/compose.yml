@@ -18,8 +18,8 @@ services:
 
   mc2:
     container_name: mc2
-    image: docker.io/itzg/minecraft-server:java21
-    restart: always
+    image: docker.io/itzg/minecraft-server:latest
+    # restart: always
     tty: true
     stdin_open: true
     ports:
@@ -30,15 +30,39 @@ services:
       # VERSION: 1.21.1
       CF_API_KEY: ${CF_API_KEY}
       TYPE: AUTO_CURSEFORGE
-      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/fantasy-minecraft-fabric/files/7269069
-      CF_FORCE_INCLUDE_MODS: |
-        oracle-index
+      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/better-fantasy-magic-rpg-adventure/files/6453992
+      # CF_FORCE_INCLUDE_MODS: |
+      #   oracle-index
     volumes:
       - ${VOLUME_DIR}/mc2:/data
-      - ${VOLUME_DIR}/modscache:/downloads:ro
+      - ${VOLUME_DIR}/mc2_downloads:/downloads:rw
     labels:
       - 'portical.upnp.forward=25566:25566/tcp'
       - 'podlab.dns.update=olsonsky.com a mc2 auto|olsonsky.com srv _minecraft._tcp.mc2 mc2 25566'
+
+  # mc2:
+  #   container_name: mc2
+  #   image: docker.io/itzg/minecraft-server:java21
+  #   restart: always
+  #   tty: true
+  #   stdin_open: true
+  #   ports:
+  #     - "25566:25565"
+  #   environment:
+  #     EULA: "TRUE"
+  #     # TYPE: FABRIC
+  #     # VERSION: 1.21.1
+  #     CF_API_KEY: ${CF_API_KEY}
+  #     TYPE: AUTO_CURSEFORGE
+  #     CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/fantasy-minecraft-fabric/files/7269069
+  #     CF_FORCE_INCLUDE_MODS: |
+  #       oracle-index
+  #   volumes:
+  #     - ${VOLUME_DIR}/mc2:/data
+  #     - ${VOLUME_DIR}/modscache:/downloads
+  #   labels:
+  #     - 'portical.upnp.forward=25566:25566/tcp'
+  #     - 'podlab.dns.update=olsonsky.com a mc2 auto|olsonsky.com srv _minecraft._tcp.mc2 mc2 25566'
 
   mc1:
     container_name: mc1
