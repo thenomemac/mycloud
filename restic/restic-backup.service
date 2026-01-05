@@ -1,0 +1,16 @@
+# cp restic-backup.* /etc/systemd/system/
+# systemctl daemon-reload
+# systemctl enable --now restic-backup.timer
+# systemctl start restic-backup
+# journalctl -xeu restic-backup.service
+
+[Unit]
+Description=Offsite backup with restic
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=30
+ExecStartPre=/home/thenome/work/mycloud/restic/unlock-systemd.sh
+ExecStart=/home/thenome/work/mycloud/restic/run-systemd.sh
+ExecStopPost=/home/thenome/work/mycloud/restic/unlock-systemd.sh
