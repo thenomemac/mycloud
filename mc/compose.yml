@@ -64,21 +64,22 @@ services:
   #     - 'portical.upnp.forward=25566:25566/tcp'
   #     - 'podlab.dns.update=olsonsky.com a mc2 auto|olsonsky.com srv _minecraft._tcp.mc2 mc2 25566'
 
-  mc1:
-    container_name: mc1
-    image: docker.io/itzg/minecraft-server:latest
-    restart: always
-    tty: true
-    stdin_open: true
-    ports:
-      - "25565:25565"
-    environment:
-      EULA: "TRUE"
-      CF_API_KEY: ${CF_API_KEY}
-      TYPE: AUTO_CURSEFORGE
-      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/all-in-one-create/files/6251041
-    volumes:
-      - ${VOLUME_DIR}/mc1:/data
-    labels:
-      - 'portical.upnp.forward=25565:25565/tcp'
-      - 'podlab.dns.update=olsonsky.com a mc1 auto|olsonsky.com srv _minecraft._tcp.mc1 mc1 25565'
+  # mc1:
+  #   container_name: mc1
+  #   image: docker.io/itzg/minecraft-server:latest
+  #   restart: always
+  #   tty: true
+  #   stdin_open: true
+  #   ports:
+  #     - "25565:25565"
+  #   environment:
+  #     EULA: "TRUE"
+  #     CF_API_KEY: ${CF_API_KEY}
+  #     TYPE: AUTO_CURSEFORGE
+  #     CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/bliss-smp
+  #   volumes:
+  #     - ${VOLUME_DIR}/mc1:/data
+  #     - ${VOLUME_DIR}/mc1_downloads:/downloads:rw
+  #   labels:
+  #     - 'portical.upnp.forward=25565:25565/tcp'
+  #     - 'podlab.dns.update=olsonsky.com a mc1 auto|olsonsky.com srv _minecraft._tcp.mc1 mc1 25565'
