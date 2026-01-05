@@ -19,7 +19,7 @@ set -x
 
 restic snapshots
 
-restic backup  --verbose --exclude=.cache --exclude=.local /shared/volumes /home
+restic backup --verbose --exclude=.cache --exclude=.local /shared/volumes /home
 
 restic snapshots
 
