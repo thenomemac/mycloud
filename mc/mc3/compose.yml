@@ -15,3 +15,4 @@ services:
     labels:
       - 'portical.upnp.forward=25567:25567/tcp'
       - 'podlab.dns.update=olsonsky.com a mc3 auto|olsonsky.com srv _minecraft._tcp.mc3 mc3 25567'
+      - 'podlab.html.set=Minecraft Version: 1.21.11 | Modpack: NA | Mods: NA | Port: 25567 | Description: Simple minecraft world no mods. Joint this if in doubt.'

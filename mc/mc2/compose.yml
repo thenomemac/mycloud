@@ -16,6 +16,8 @@ services:
       CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/better-fantasy-magic-rpg-adventure/files/6453992
       # CF_FORCE_INCLUDE_MODS: |
       #   oracle-index
+      INIT_MEMORY: 1G
+      MAX_MEMORY: 4G
     volumes:
       - ${VOLUME_DIR}/mc2:/data
       - ${VOLUME_DIR}/mc2_downloads:/downloads:rw
