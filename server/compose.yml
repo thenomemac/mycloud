@@ -70,3 +70,34 @@ services:
     # Optional - alternative address used for autodiscovery
     environment:
       - JELLYFIN_PublishedServerUrl=http://192.168.1.107:8096
+
+  copyparty:
+    # Before running you must template the config files with users since no user via env option exists
+    # pipx install jinja2-cli
+    # jinja2 -f env copyparty/copyparty.conf .env > .env.copyparty.conf
+    image: docker.io/copyparty/ac:latest
+    container_name: copyparty
+    ports:
+      - 3923:3923 
+    volumes:
+      - /shared:/w/shared:z
+      - ${VOLUME_DIR}/copyparty_cfg:/cfg
+      - .env.copyparty.conf:/cfg/copyparty.conf:ro
+    # restart: always
+    environment:
+      # LD_PRELOAD: /usr/lib/libmimalloc-secure.so.NOPE
+      # enable mimalloc by replacing "NOPE" with "2" for a nice speed-boost (will use twice as much ram)
+      PYTHONUNBUFFERED: 1
+      # ensures log-messages are not delayed (but can reduce speed a tiny bit)
+    stop_grace_period: 15s  # thumbnailer is allowed to continue finishing up for 10s after the shutdown signal
+    healthcheck:
+      # hide it from logs with "/._" so it matches the default --lf-url filter 
+      test: ["CMD-SHELL", "wget --spider -q 127.0.0.1:3923/?reset=/._"]
+      interval: 1m
+      timeout: 2s
+      retries: 5
+      start_period: 15s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.copyparty.rule=Host(`share.olsonsky.com`)"
+      - 'podlab.dns.update=olsonsky.com a share auto'
