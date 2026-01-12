@@ -3,3 +3,4 @@
 *.htpasswd
 **/data/*
 .mypy_cache/*
+*.env*
