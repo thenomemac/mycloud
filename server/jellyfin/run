@@ -1,5 +1,5 @@
 #!/bin/bash
-jinja2 -f env copyparty/copyparty.conf .env > .env.copyparty.conf
+
 set -x
 podman-compose down
 podman-compose up -d

@@ -1,0 +1,20 @@
+services:
+
+  jellyfin:
+    image: docker.io/jellyfin/jellyfin
+    container_name: jellyfin
+    # Optional - specify the uid and gid you would like Jellyfin to use instead of root
+    # user: uid:gid
+    ports:
+      - 8096:8096/tcp
+      - 7359:7359/udp
+    volumes:
+      - ${VOLUME_DIR}/jellyfin/config:/config
+      - ${VOLUME_DIR}/jellyfin/cache:/cache
+      - type: bind
+        source: /shared/downloads
+        target: /media
+    restart: 'always'
+    # Optional - alternative address used for autodiscovery
+    environment:
+      - JELLYFIN_PublishedServerUrl=http://192.168.1.107:8096
