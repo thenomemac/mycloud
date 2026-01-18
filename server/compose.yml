@@ -59,6 +59,7 @@ services:
     # jinja2 -f env copyparty/copyparty.conf .env > .env.copyparty.conf
     image: docker.io/copyparty/ac:latest
     container_name: copyparty
+    restart: always
     ports:
       - 3923:3923 
     volumes:
