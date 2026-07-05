@@ -1,0 +1,16 @@
+services:
+  mumble:
+    image: docker.io/mumblevoip/mumble-server:latest
+    container_name: mumble
+    hostname: mumble
+    restart: on-failure
+    ports:
+      - 64738:64738
+      - 64738:64738/udp
+      # - 6502:6502
+    # user: 1000:1000
+    volumes:
+      - ${VOLUME_DIR}/mumble:/data:z
+    environment:
+      - MUMBLE_CONFIG_SERVER_PASSWORD=${MUMBLE_CONFIG_SERVER_PASSWORD}
+      - MUMBLE_SUPERUSER_PASSWORD=${MUMBLE_SUPERUSER_PASSWORD}

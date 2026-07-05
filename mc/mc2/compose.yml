@@ -1,19 +1,21 @@
 services:
   mc2:
     container_name: mc2
-    image: docker.io/itzg/minecraft-server:latest
+    image: docker.io/itzg/minecraft-server:java17
     # restart: always
     tty: true
     stdin_open: true
     ports:
       - "25566:25565"
+      - "24454:24454"
     environment:
       EULA: "TRUE"
       # TYPE: FABRIC
       # VERSION: 1.21.1
       CF_API_KEY: ${CF_API_KEY}
       TYPE: AUTO_CURSEFORGE
-      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/better-fantasy-magic-rpg-adventure/files/6453992
+      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/better-fantasy-magic-rpg-adventure/files/7843531
+
       # CF_FORCE_INCLUDE_MODS: |
       #   oracle-index
       INIT_MEMORY: 1G
